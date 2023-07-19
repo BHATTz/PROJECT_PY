@@ -11,6 +11,7 @@ def text_to_speech(text):
 while True:
     text = input("Enter something to hear (or 'q' to quit): ")
     if text == "q":
+        text_to_speech("Quitting the program. Goodbye!")
         break
 
     text_to_speech(text)
