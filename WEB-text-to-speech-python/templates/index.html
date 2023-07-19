@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text-to-Speech</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Text-to-Speech</h1>
+    <textarea id="input-text" placeholder="Enter your text here..."></textarea>
+    <button id="convert-btn">Convert to Speech</button>
+    <audio id="audio-player" controls></audio>
+
+    <script>
+        document.getElementById('convert-btn').addEventListener('click', function () {
+            const text = document.getElementById('input-text').value;
+            fetch('/tts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: text })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const audioPlayer = document.getElementById('audio-player');
+                    audioPlayer.src = '/static/output.mp3';
+                    audioPlayer.play();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
