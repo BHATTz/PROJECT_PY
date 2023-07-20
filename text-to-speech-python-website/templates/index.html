@@ -7,28 +7,28 @@
 </head>
 <body>
     <h1>Text-to-Speech</h1>
-    <textarea id="input-text" placeholder="Enter your text here..."></textarea><br>
-    <button id="convert-btn">Convert to Speech</button><br>
-    <audio id="audio-player" controls></audio><br>
+    <input type="text" id="text-to-speech-input" placeholder="Enter text here">
+    <button onclick="speakText()">Speak</button>
     <h6>© 2023 T-TO-S, Sarthak Bhatt</h6>
 
     <script>
-        document.getElementById('convert-btn').addEventListener('click', function () {
-            const text = document.getElementById('input-text').value;
-            fetch('/tts', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text: text })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    const audioPlayer = document.getElementById('audio-player');
-                    audioPlayer.src = '/static/output.mp3';
-                    audioPlayer.play();
-                }
-            });
-        });
+        function speakText() {
+            var text = document.getElementById("text-to-speech-input").value;
+            if (text.trim() === "") {
+                alert("Please enter some text before clicking Speak.");
+                return;
+            }
+    
+            // Use the Web Speech API for text-to-speech
+            if ('speechSynthesis' in window) {
+                var synthesis = window.speechSynthesis;
+                var utterance = new SpeechSynthesisUtterance(text);
+                synthesis.speak(utterance);
+            } else {
+                alert("Sorry, your browser doesn't support the Speech Synthesis API.");
+            }
+        }
     </script>
+    
 </body>
 </html>
